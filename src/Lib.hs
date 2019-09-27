@@ -103,7 +103,8 @@ isValidChar :: Char -> Bool
 isValidChar c |    (c >= 'A' && c <='Z')
                 || (c >= 'a' && c <= 'z')
                 || (c >= '0' && c <= '9')
-                || (c == '\'') = True
+                || (c == '\'')
+                || (c == '_') = True
               | otherwise = False
 
 toMaybe :: Eq a => a -> a -> Maybe a

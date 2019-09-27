@@ -20,12 +20,12 @@
 <text text-anchor="middle" x="386.041" y="-158.3" font-family="Times,serif" font-size="14.00">dropBetween</text>
 </g>
 <!-- splitOn -->
-<g id="node14" class="node"><title>splitOn</title>
+<g id="node15" class="node"><title>splitOn</title>
 <ellipse fill="none" stroke="black" cx="474.041" cy="-90" rx="36.2938" ry="18"/>
 <text text-anchor="middle" x="474.041" y="-86.3" font-family="Times,serif" font-size="14.00">splitOn</text>
 </g>
 <!-- dropBetween&#45;&gt;splitOn -->
-<g id="edge2" class="edge"><title>dropBetween&#45;&gt;splitOn</title>
+<g id="edge1" class="edge"><title>dropBetween&#45;&gt;splitOn</title>
 <path fill="none" stroke="black" d="M406.451,-144.765C418.729,-134.998 434.486,-122.464 447.697,-111.956"/>
 <polygon fill="black" stroke="black" points="449.892,-114.681 455.54,-105.717 445.535,-109.203 449.892,-114.681"/>
 </g>
@@ -35,7 +35,7 @@
 <text text-anchor="middle" x="563.041" y="-158.3" font-family="Times,serif" font-size="14.00">dropBetweenWithEscape</text>
 </g>
 <!-- dropBetweenWithEscape&#45;&gt;splitOn -->
-<g id="edge3" class="edge"><title>dropBetweenWithEscape&#45;&gt;splitOn</title>
+<g id="edge2" class="edge"><title>dropBetweenWithEscape&#45;&gt;splitOn</title>
 <path fill="none" stroke="black" d="M541.497,-144.055C529.258,-134.429 513.83,-122.295 500.818,-112.061"/>
 <polygon fill="black" stroke="black" points="502.698,-109.087 492.675,-105.656 498.371,-114.589 502.698,-109.087"/>
 </g>
@@ -50,7 +50,7 @@
 <text text-anchor="middle" x="102.041" y="-230.3" font-family="Times,serif" font-size="14.00">dropMultiLineComments</text>
 </g>
 <!-- dropComments&#45;&gt;dropMultiLineComments -->
-<g id="edge4" class="edge"><title>dropComments&#45;&gt;dropMultiLineComments</title>
+<g id="edge3" class="edge"><title>dropComments&#45;&gt;dropMultiLineComments</title>
 <path fill="none" stroke="black" d="M285.247,-291.998C249.983,-281.026 199.131,-265.206 159.944,-253.014"/>
 <polygon fill="black" stroke="black" points="160.838,-249.627 150.25,-249.998 158.759,-256.311 160.838,-249.627"/>
 </g>
@@ -60,12 +60,12 @@
 <text text-anchor="middle" x="327.041" y="-230.3" font-family="Times,serif" font-size="14.00">dropSingleLineComments</text>
 </g>
 <!-- dropComments&#45;&gt;dropSingleLineComments -->
-<g id="edge5" class="edge"><title>dropComments&#45;&gt;dropSingleLineComments</title>
+<g id="edge4" class="edge"><title>dropComments&#45;&gt;dropSingleLineComments</title>
 <path fill="none" stroke="black" d="M327.041,-287.697C327.041,-279.983 327.041,-270.712 327.041,-262.112"/>
 <polygon fill="black" stroke="black" points="330.541,-262.104 327.041,-252.104 323.541,-262.104 330.541,-262.104"/>
 </g>
 <!-- dropMultiLineComments&#45;&gt;dropBetween -->
-<g id="edge6" class="edge"><title>dropMultiLineComments&#45;&gt;dropBetween</title>
+<g id="edge5" class="edge"><title>dropMultiLineComments&#45;&gt;dropBetween</title>
 <path fill="none" stroke="black" d="M158.83,-219.003C209.259,-206.573 282.441,-188.535 332.016,-176.316"/>
 <polygon fill="black" stroke="black" points="333.039,-179.669 341.911,-173.877 331.364,-172.872 333.039,-179.669"/>
 </g>
@@ -75,7 +75,7 @@
 <text text-anchor="middle" x="461.041" y="-302.3" font-family="Times,serif" font-size="14.00">dropSqlTH</text>
 </g>
 <!-- dropSqlTH&#45;&gt;dropBetween -->
-<g id="edge7" class="edge"><title>dropSqlTH&#45;&gt;dropBetween</title>
+<g id="edge6" class="edge"><title>dropSqlTH&#45;&gt;dropBetween</title>
 <path fill="none" stroke="black" d="M460.113,-287.89C458.459,-269.163 453.854,-238.774 441.041,-216 434.64,-204.624 425.03,-194.16 415.625,-185.589"/>
 <polygon fill="black" stroke="black" points="417.699,-182.755 407.847,-178.856 413.117,-188.047 417.699,-182.755"/>
 </g>
@@ -85,7 +85,7 @@
 <text text-anchor="middle" x="563.041" y="-230.3" font-family="Times,serif" font-size="14.00">dropStringLiterals</text>
 </g>
 <!-- dropStringLiterals&#45;&gt;dropBetweenWithEscape -->
-<g id="edge8" class="edge"><title>dropStringLiterals&#45;&gt;dropBetweenWithEscape</title>
+<g id="edge7" class="edge"><title>dropStringLiterals&#45;&gt;dropBetweenWithEscape</title>
 <path fill="none" stroke="black" d="M563.041,-215.697C563.041,-207.983 563.041,-198.712 563.041,-190.112"/>
 <polygon fill="black" stroke="black" points="566.541,-190.104 563.041,-180.104 559.541,-190.104 566.541,-190.104"/>
 </g>
@@ -95,7 +95,7 @@
 <text text-anchor="middle" x="412.041" y="-14.3" font-family="Times,serif" font-size="14.00">dropUntil</text>
 </g>
 <!-- dropUntil&#45;&gt;dropUntil -->
-<g id="edge9" class="edge"><title>dropUntil&#45;&gt;dropUntil</title>
+<g id="edge8" class="edge"><title>dropUntil&#45;&gt;dropUntil</title>
 <path fill="none" stroke="black" d="M443.407,-30.985C459.922,-33.0862 474.887,-28.7578 474.887,-18 474.887,-9.51141 465.569,-5.02594 453.525,-4.54359"/>
 <polygon fill="black" stroke="black" points="453.233,-1.05329 443.407,-5.01498 453.559,-8.0457 453.233,-1.05329"/>
 </g>
@@ -114,10 +114,20 @@
 <ellipse fill="none" stroke="black" cx="612.041" cy="-306" rx="44.6926" ry="18"/>
 <text text-anchor="middle" x="612.041" y="-302.3" font-family="Times,serif" font-size="14.00">keywords</text>
 </g>
+<!-- main -->
+<g id="node13" class="node"><title>main</title>
+<ellipse fill="none" stroke="black" cx="539.041" cy="-450" rx="28.6953" ry="18"/>
+<text text-anchor="middle" x="539.041" y="-446.3" font-family="Times,serif" font-size="14.00">main</text>
+</g>
 <!-- someFunc -->
-<g id="node13" class="node"><title>someFunc</title>
+<g id="node14" class="node"><title>someFunc</title>
 <ellipse fill="none" stroke="black" cx="539.041" cy="-378" rx="47.3916" ry="18"/>
 <text text-anchor="middle" x="539.041" y="-374.3" font-family="Times,serif" font-size="14.00">someFunc</text>
+</g>
+<!-- main&#45;&gt;someFunc -->
+<g id="edge9" class="edge"><title>main&#45;&gt;someFunc</title>
+<path fill="none" stroke="black" d="M539.041,-431.697C539.041,-423.983 539.041,-414.712 539.041,-406.112"/>
+<polygon fill="black" stroke="black" points="542.541,-406.104 539.041,-396.104 535.541,-406.104 542.541,-406.104"/>
 </g>
 <!-- someFunc&#45;&gt;defaultParseContext -->
 <g id="edge10" class="edge"><title>someFunc&#45;&gt;defaultParseContext</title>
@@ -145,7 +155,7 @@
 <polygon fill="black" stroke="black" points="590.746,-332.269 595.542,-322.821 585.901,-327.216 590.746,-332.269"/>
 </g>
 <!-- validateWord -->
-<g id="node17" class="node"><title>validateWord</title>
+<g id="node18" class="node"><title>validateWord</title>
 <ellipse fill="none" stroke="black" cx="734.041" cy="-306" rx="59.2899" ry="18"/>
 <text text-anchor="middle" x="734.041" y="-302.3" font-family="Times,serif" font-size="14.00">validateWord</text>
 </g>
@@ -155,7 +165,7 @@
 <polygon fill="black" stroke="black" points="689.083,-326.858 697.312,-320.185 686.717,-320.269 689.083,-326.858"/>
 </g>
 <!-- wrapQuotes -->
-<g id="node18" class="node"><title>wrapQuotes</title>
+<g id="node19" class="node"><title>wrapQuotes</title>
 <ellipse fill="none" stroke="black" cx="864.041" cy="-306" rx="53.0913" ry="18"/>
 <text text-anchor="middle" x="864.041" y="-302.3" font-family="Times,serif" font-size="14.00">wrapQuotes</text>
 </g>
@@ -170,7 +180,7 @@
 <polygon fill="black" stroke="black" points="435.735,-40.4723 426.484,-35.307 430.495,-45.1135 435.735,-40.4723"/>
 </g>
 <!-- takeUntil -->
-<g id="node15" class="node"><title>takeUntil</title>
+<g id="node16" class="node"><title>takeUntil</title>
 <ellipse fill="none" stroke="black" cx="536.041" cy="-18" rx="43.5923" ry="18"/>
 <text text-anchor="middle" x="536.041" y="-14.3" font-family="Times,serif" font-size="14.00">takeUntil</text>
 </g>
@@ -185,7 +195,7 @@
 <polygon fill="black" stroke="black" points="576.245,-1.03974 566.441,-5.05701 576.61,-8.0302 576.245,-1.03974"/>
 </g>
 <!-- toMaybe -->
-<g id="node16" class="node"><title>toMaybe</title>
+<g id="node17" class="node"><title>toMaybe</title>
 <ellipse fill="none" stroke="black" cx="911.041" cy="-234" rx="42.4939" ry="18"/>
 <text text-anchor="middle" x="911.041" y="-230.3" font-family="Times,serif" font-size="14.00">toMaybe</text>
 </g>
@@ -203,14 +213,6 @@
 <g id="edge22" class="edge"><title>validateWord&#45;&gt;toMaybe</title>
 <path fill="none" stroke="black" d="M768.589,-291.337C798.092,-279.669 840.533,-262.885 871.411,-250.673"/>
 <polygon fill="black" stroke="black" points="872.987,-253.813 880.999,-246.881 870.412,-247.304 872.987,-253.813"/>
-</g>
-<g id="node19" class="node"><title></title>
-<ellipse fill="none" stroke="black" cx="539.041" cy="-450" rx="27" ry="18"/>
-</g>
-<!-- &#45;&gt;someFunc -->
-<g id="edge1" class="edge"><title>&#45;&gt;someFunc</title>
-<path fill="none" stroke="black" d="M539.041,-431.697C539.041,-423.983 539.041,-414.712 539.041,-406.112"/>
-<polygon fill="black" stroke="black" points="542.541,-406.104 539.041,-396.104 535.541,-406.104 542.541,-406.104"/>
 </g>
 </g>
 </svg>

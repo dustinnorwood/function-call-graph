@@ -99,20 +99,31 @@ escape :: Char -> String
 escape '\'' = "\\\'"
 escape c = [c]
 
+isValidOpeningChar :: Char -> Bool
+isValidOpeningChar c |    (c >= 'a' && c <= 'z')
+                       || (c == '_') = True
+                     | otherwise = False
+
 isValidChar :: Char -> Bool
-isValidChar c |    (c >= 'A' && c <='Z')
-                || (c >= 'a' && c <= 'z')
+isValidChar c |    isValidOpeningChar c
+                || (c >= 'A' && c <='Z')
                 || (c >= '0' && c <= '9')
-                || (c == '\'')
-                || (c == '_') = True
+                || (c == '\'') = True
               | otherwise = False
 
 toMaybe :: Eq a => a -> a -> Maybe a
 toMaybe a b | a == b = Nothing
             | otherwise = Just b
 
-validateWord :: String -> Maybe String
-validateWord = toMaybe "" . concat . map escape . filter isValidChar
+validateFunDef :: String -> Maybe String
+validateFunDef word = fmap (concat . map escape) $ case span isValidChar word of
+  ("",_) -> Nothing
+  (vWord,[]) -> Just vWord
+  (vWord, (x:_)) | (x == ':' || x == ' ') -> Just vWord
+                 | otherwise -> Nothing
+
+validateFunAp :: String -> Maybe String
+validateFunAp = toMaybe "" . concat . map escape . filter isValidChar
 
 data ParseContext = ParseContext
   { inComment    :: Bool
@@ -132,7 +143,8 @@ someFunc = do
     forM_ files $ \file -> do
       contents <- liftIO $ readFile file
       forM_ (lines contents) $ \line -> do
-        let possibleFunctionDefinition = maybe False (> ' ') $ listToMaybe line
+        let firstWord = listToMaybe $ words line
+            possibleFunctionDefinition = maybe False isValidOpeningChar $ listToMaybe line
         pc1 <- get
         let (inComment', ws'') = dropComments (inComment pc1) $ words line
             (inSqlTH', ws) = if inComment'
@@ -141,11 +153,11 @@ someFunc = do
                                      in (sql, if sql then ws' else dropStringLiterals ws')
         put pc1{inComment = inComment', inSqlTH = inSqlTH'}
         if possibleFunctionDefinition
-          then when (length ws > 0) $ case validateWord (head ws) of
-            Just funcName | not (funcName `S.member` keywords) -> do
+          then for_ (listToMaybe ws) $ \w -> case validateFunDef w of
+            Just funcName | not (funcName `S.member` keywords) && (Just w == firstWord) -> do
               pc@ParseContext{..} <- get
               let funcCalls = tail ws
-                  s = S.fromList . catMaybes . map validateWord $ funcCalls
+                  s = S.fromList . catMaybes . map validateFunAp $ funcCalls
                   funcMap' = case M.lookup currentFunc funcMap of
                     Nothing -> M.insert currentFunc s funcMap
                     Just s' -> M.insert currentFunc (S.union s' s) funcMap
@@ -153,7 +165,7 @@ someFunc = do
             _ -> return ()
           else do
             pc@ParseContext{..} <- get
-            let s = S.fromList . catMaybes . map validateWord $ ws
+            let s = S.fromList . catMaybes . map validateFunAp $ ws
                 funcMap' = case M.lookup currentFunc funcMap of
                   Nothing -> M.insert currentFunc s funcMap
                   Just s' -> M.insert currentFunc (S.union s' s) funcMap

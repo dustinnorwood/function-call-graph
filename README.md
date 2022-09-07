@@ -13,7 +13,7 @@ The compiled binary is called `fcall`.
 
 `fcall` accepts an arbitrary number of filenames as input arguments, including wildcards. Each file is parsed using Haskell's syntax for function declaration and application. In particular, top-level function definitions occur immediately after a newline character.
 
-### Example `function-call-graph` usage
+### Example usage
 ```sh
 fcall */*.hs | dot -Tsvg -o ~/fcall.svg
 ```
@@ -22,7 +22,7 @@ fcall */*.hs | dot -Tsvg -o ~/fcall.svg
 
 ### Options
 
-`--clusters` to group functions by file.
+`--clusters` to group functions by file. This will give you a sense of your [coupling](https://en.wikipedia.org/wiki/Coupling_(computer_programming)) and [cohesion](https://en.wikipedia.org/wiki/Cohesion_(computer_science)).
 
 ![fcall --clusters](fcall-clusters.svg)
 

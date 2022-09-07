@@ -32,3 +32,4 @@ fcall */*.hs | dot -Tsvg -o ~/fcall.svg
 * Since this is a very naive parser, some preprocessor directives and text inside quasiquoters get parsed as functions.
 * There's no option to read files or apply a wildcard recursively. Use your shell to do that.
 * Multiple functions with the same name, originating in different files, get clobbered.
+* The color scheme only goes up to 13. If you have more than 13 input files, you may get unexpected results.

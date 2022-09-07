@@ -1,3 +1,6 @@
 # Changelog for fcall
 
-## Unreleased changes
+## 0.1.0.1 - 2022-09-07
+
+updated Stack LTS to 19.22, updated README
+

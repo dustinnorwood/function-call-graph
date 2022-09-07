@@ -3,16 +3,19 @@ This repository generates function call dependency graphs of Haskell files. It i
 
 ## Build steps
 ```sh
-stack init
+stack build
 stack install
 ```
 
 ## Usage
-`function-call-graph` accepts an arbitrary number of filenames as input arguments, including wildcards. Each file is parsed using Haskell's syntax for function declaration and application. In particular, top-level function definitions occur immediately after a newline character.
+
+The compiled binary is called `fcall`.
+
+`fcall` accepts an arbitrary number of filenames as input arguments, including wildcards. Each file is parsed using Haskell's syntax for function declaration and application. In particular, top-level function definitions occur immediately after a newline character.
 
 ### Example `function-call-graph` usage
 ```sh
-function-call-graph */*.hs | dot -Tsvg -o ~/function-call-graph.svg
+fcall */*.hs | dot -Tsvg -o ~/fcall.svg
 ```
 
 ![function-call-graph function call dependencies](fcall.svg)

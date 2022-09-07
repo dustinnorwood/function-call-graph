@@ -1,17 +1,26 @@
+{-# LANGUAGE DataKinds          #-}
+{-# LANGUAGE DeriveGeneric      #-}
+{-# LANGUAGE FlexibleInstances  #-}  -- One more extension.
+{-# LANGUAGE OverloadedStrings  #-}
+{-# LANGUAGE StandaloneDeriving #-}  -- To derive Show
+{-# LANGUAGE TypeOperators      #-}
 {-# LANGUAGE RecordWildCards #-}
+
 module Lib
     ( someFunc
     ) where
 
-import Control.Monad.IO.Class
-import Control.Monad.Trans.State
-import Control.Monad
-import Data.Foldable
-import Data.List
+import Options.Generic
+import Control.Monad.IO.Class ( MonadIO(liftIO) )
+import Control.Monad.Trans.State ( execStateT, get, put )
+import Control.Monad ( forM_ )
+import Data.Foldable ( Foldable(toList), for_ )
+import Data.List ( isInfixOf, isPrefixOf )
+import Data.Tuple (swap)
 import qualified Data.Map.Strict as M
-import Data.Maybe
+import Data.Maybe ( catMaybes, listToMaybe )
 import qualified Data.Set as S
-import System.Environment
+import System.Environment ( getArgs )
 
 keywords :: S.Set String
 keywords = S.fromList
@@ -125,23 +134,52 @@ validateFunDef word = fmap (concat . map escape) $ case span isValidChar word of
 validateFunAp :: String -> Maybe String
 validateFunAp = toMaybe "" . concat . map escape . filter isValidChar
 
+type FuncName = String
+type FuncFile = String
+type FuncId = ( FuncName
+              , FuncFile
+              )
+type ColorName = String
+
 data ParseContext = ParseContext
   { inComment    :: Bool
   , inSqlTH      :: Bool
-  , currentFunc  :: String
-  , defFuncs     :: S.Set String
-  , funcMap      :: M.Map String (S.Set String)
+  , currentFunc  :: FuncId
+  , defFuncs     :: S.Set FuncId
+  , funcMap      :: M.Map FuncId (S.Set FuncName)
+  , fileMap      :: M.Map FuncFile ColorName
   }
 
-defaultParseContext :: ParseContext
-defaultParseContext = ParseContext False False "" S.empty M.empty
 
-someFunc :: IO ()
-someFunc = do
-  files <- getArgs
-  ParseContext{defFuncs=funcs, funcMap=links} <- flip execStateT defaultParseContext $ do
+
+defaultParseContext :: ParseContext
+defaultParseContext = ParseContext False False ("","-") S.empty M.empty M.empty
+
+data Opts w = Opts { clusters :: w ::: Bool <!> "False"
+                   , file :: w ::: NoLabel [String] <?> "filename..."
+                   }
+  deriving (Generic)
+instance ParseRecord (Opts Wrapped)
+deriving instance Show (Opts Unwrapped)
+
+-- technique for getting varargs argv https://github.com/Gabriel439/Haskell-Optparse-Generic-Library/issues/65
+newtype NoLabel a = NoLabel a  deriving (Generic, Show)
+instance ParseFields a => ParseRecord (NoLabel a)
+instance ParseFields a => ParseFields (NoLabel a) where
+  parseFields msg _ _ def = fmap NoLabel (parseFields msg Nothing Nothing def)
+
+someFunc :: Opts Unwrapped -> IO ()
+someFunc opts = do
+  let getNoLabel (NoLabel x) = x
+      files = getNoLabel $ file opts
+  ParseContext{defFuncs=funcs, funcMap=links, fileMap=filemap} <- flip execStateT defaultParseContext $ do
     forM_ files $ \file -> do
       contents <- liftIO $ readFile file
+
+      -- assign a color to the file
+      pc0 <- get
+      put pc0{fileMap = M.insertWith (flip const) file (show $ M.size (fileMap pc0) + 1) $ fileMap pc0}
+
       forM_ (lines contents) $ \line -> do
         let firstWord = listToMaybe $ words line
             possibleFunctionDefinition = maybe False isValidOpeningChar $ listToMaybe line
@@ -158,22 +196,33 @@ someFunc = do
               pc@ParseContext{..} <- get
               let funcCalls = tail ws
                   s = S.fromList . catMaybes . map validateFunAp $ funcCalls
-                  funcMap' = case M.lookup currentFunc funcMap of
-                    Nothing -> M.insert currentFunc s funcMap
-                    Just s' -> M.insert currentFunc (S.union s' s) funcMap
-              put pc{currentFunc = funcName, defFuncs = S.insert funcName defFuncs, funcMap = funcMap'}
+                  funcId = (funcName,file) -- [TODO] should this be (currentFunc,file)?
+                  funcMap' = M.insertWith S.union funcId s funcMap
+              put pc{currentFunc = funcId, defFuncs = S.insert funcId defFuncs, funcMap = funcMap'}
             _ -> return ()
           else do
             pc@ParseContext{..} <- get
             let s = S.fromList . catMaybes . map validateFunAp $ ws
-                funcMap' = case M.lookup currentFunc funcMap of
-                  Nothing -> M.insert currentFunc s funcMap
-                  Just s' -> M.insert currentFunc (S.union s' s) funcMap
+                funcMap' = M.insertWith S.union currentFunc s funcMap
             put pc{funcMap = funcMap'}
-  let links' = M.map (S.intersection funcs) links
-      header = "strict digraph deps {"
+  let links' = M.map (S.intersection (S.map fst funcs)) links
+      header = "strict digraph deps {\n  node [colorscheme=set312, style=filled];\n"
       footer = "}"
-      defs = map ((++ " [style=solid];") . wrapQuotes) $ toList funcs
-      maps = M.foldMapWithKey (\k a -> map (\y -> wrapQuotes k ++ " -> " ++ wrapQuotes y ++ ";") $ toList a) links'
+      file2func = M.fromListWith (<>) (fmap (:[]) . swap <$> toList funcs)
+      defs =
+        [ commentCluster ("subgraph cluster_" ++ M.findWithDefault "0" file filemap ++ " {\n") ++
+          commentCluster ("  label = " ++ wrapQuotes file ++ ";\n") ++
+          unlines [ "      " ++ wrapQuotes funcname ++ " [color=" ++ M.findWithDefault "white" file filemap ++ "];"
+                  | funcname <- file2func M.! file
+                  ] ++
+          commentCluster "}\n"
+        | file <- M.keys file2func
+        ]
+      maps = M.foldMapWithKey (\(k,_) a -> map (\y -> wrapQuotes k ++ " -> " ++ wrapQuotes y ++ ";") $ toList a) links'
   mapM_ putStrLn $ header : (defs ++ maps ++ [footer])
 
+  where
+    commentCluster x =
+      if clusters opts
+      then "   "   ++ x
+      else "  // " ++ x

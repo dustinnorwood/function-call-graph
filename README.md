@@ -20,8 +20,15 @@ fcall */*.hs | dot -Tsvg -o ~/fcall.svg
 
 ![function-call-graph function call dependencies](fcall.svg)
 
+### Options
+
+`--clusters` to group functions by file.
+
+![fcall --clusters](fcall-clusters.svg)
+
 ## Current limitations
 * Infix operators are not supported.
 * Unicode is not supported.
 * Since this is a very naive parser, some preprocessor directives and text inside quasiquoters get parsed as functions.
-* There's no option to read files or apply a wildcard recursively.
+* There's no option to read files or apply a wildcard recursively. Use your shell to do that.
+* Multiple functions with the same name, originating in different files, get clobbered.
